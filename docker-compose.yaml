@@ -3,8 +3,9 @@ version: '3.0'
 services:
   api:
     build:
-      context: .
+      context: ./api # Dockerfile 위치
       dockerfile: Dockerfile
+    restart: always
     ports:
       - 8080:8080
   mariadb:
@@ -13,8 +14,6 @@ services:
     restart: always
     ports:
       - 3306:3306
-    volumes:
-      - -mariadb
     environment:
       - MARIADB_USER=user
       - MARIADB_PASSWORD=passwd
