@@ -1,0 +1,21 @@
+version: '3.0'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+  mariadb:
+    container_name: "mariadb"
+    image: mariadb:11
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - -mariadb
+    environment:
+      - MARIADB_USER=user
+      - MARIADB_PASSWORD=passwd
+      - MARIADB_ROOT_PASSWORD=root
