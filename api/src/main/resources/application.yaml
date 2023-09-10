@@ -1,9 +1,6 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    username: user
-    password: passwd
-    url: jdbc:mariadb://127.0.0.1:3306
     hikari:
       connection-test-query: SELECT 1 FROM dual
       connection-timeout: 5000
