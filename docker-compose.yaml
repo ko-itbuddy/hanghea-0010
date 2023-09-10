@@ -2,6 +2,8 @@ version: '3.0'
 
 services:
   api:
+    depends_on:
+      - mariadb
     build:
       context: ./api # Dockerfile 위치
       dockerfile: Dockerfile
