@@ -4,7 +4,7 @@
         {
             "name": "api",
             "image": "337732851607.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010",
-            "cpu": 0,
+            "cpu": 2,
             "portMappings": [
                 {
                     "name": "api-8080-tcp",
