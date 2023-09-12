@@ -1,10 +1,10 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:337732851607:task-definition/hanghea99-plus-0010:21",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:337732851607:task-definition/hanghea99-plus-0010:25",
     "containerDefinitions": [
         {
             "name": "api",
             "image": "337732851607.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010",
-            "cpu": 1024,
+            "cpu": 2048,
             "portMappings": [
                 {
                     "name": "api-8080-tcp",
@@ -26,7 +26,7 @@
     "taskRoleArn": "arn:aws:iam::337732851607:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::337732851607:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 21,
+    "revision": 25,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -54,13 +54,13 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "cpu": "1024",
-    "memory": "3072",
+    "cpu": "2048",
+    "memory": "4096",
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-09-12T19:33:57.946Z",
+    "registeredAt": "2023-09-12T19:42:33.726Z",
     "registeredBy": "arn:aws:iam::337732851607:root",
     "tags": []
 }
