@@ -34,7 +34,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: 337732851607.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010
-  ECS_SERVICE: cicd
+  ECS_SERVICE: cicd-service
   ECS_CLUSTER: cicd-cluster
   ECS_TASK_DEFINITION: .github/aws/ecs-task.json
   CONTAINER_NAME: api
@@ -63,6 +63,10 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y%m%d%H%M%S')"
+
     - run: docker build --tag my-image api/.
     - name: Push to ECR
       id: ecr
@@ -72,7 +76,7 @@ jobs:
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         region: ap-northeast-2
         local-image: my-image
-        image: hanghea99-plus-0010:${{ github.sha }}
+        image: hanghea99-plus-0010:${{ steps.date.outputs.date }}
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def

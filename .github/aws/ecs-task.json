@@ -1,10 +1,10 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:337732851607:task-definition/hanghea99-plus-0010:3",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:337732851607:task-definition/hanghea99-plus-0010",
     "containerDefinitions": [
         {
             "name": "api",
-            "image": "337732851607.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010:latest",
-            "cpu": 0,
+            "image": "337732851607.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010",
+            "cpu": 2048,
             "portMappings": [
                 {
                     "name": "api-8080-tcp",
@@ -19,59 +19,22 @@
             "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
-            "ulimits": [],
-            "logConfiguration": {
-                "logDriver": "awslogs",
-                "options": {
-                    "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/hanghea99-plus-0010",
-                    "awslogs-region": "ap-northeast-2",
-                    "awslogs-stream-prefix": "ecs"
-                },
-                "secretOptions": []
-            }
-        },
-        {
-            "name": "aws-otel-collector",
-            "image": "public.ecr.aws/aws-observability/aws-otel-collector:v0.33.0",
-            "cpu": 0,
-            "portMappings": [],
-            "essential": true,
-            "command": [
-                "--config=/etc/ecs/ecs-cloudwatch-xray.yaml"
-            ],
-            "environment": [],
-            "mountPoints": [],
-            "volumesFrom": [],
-            "logConfiguration": {
-                "logDriver": "awslogs",
-                "options": {
-                    "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/ecs-aws-otel-sidecar-collector",
-                    "awslogs-region": "ap-northeast-2",
-                    "awslogs-stream-prefix": "ecs"
-                }
-            }
+            "ulimits": []
         }
     ],
     "family": "hanghea99-plus-0010",
+    "taskRoleArn": "arn:aws:iam::337732851607:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::337732851607:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 3,
+    "revision": 25,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
         {
-            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-        },
-        {
-            "name": "ecs.capability.execution-role-awslogs"
-        },
-        {
             "name": "com.amazonaws.ecs.capability.ecr-auth"
         },
         {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
         },
         {
             "name": "ecs.capability.execution-role-ecr-pull"
@@ -81,9 +44,6 @@
         },
         {
             "name": "ecs.capability.task-eni"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
         }
     ],
     "placementConstraints": [],
@@ -94,13 +54,13 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "cpu": "1024",
-    "memory": "3072",
+    "cpu": "2048",
+    "memory": "4096",
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-09-12T15:55:06.649Z",
+    "registeredAt": "2023-09-12T19:42:33.726Z",
     "registeredBy": "arn:aws:iam::337732851607:root",
     "tags": []
 }
