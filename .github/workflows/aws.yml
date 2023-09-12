@@ -34,7 +34,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: 337732851607.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010
-  ECS_SERVICE: cicd-service
+  ECS_SERVICE: cicd
   ECS_CLUSTER: cicd-cluster
   ECS_TASK_DEFINITION: .github/aws/ecs-task.json
   CONTAINER_NAME: api
@@ -63,24 +63,15 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - run: docker build --tag my-image api/.
-    - name: Push to ECR
-      id: ecr
-      uses: jwalton/gh-ecr-push@v1
-      with:
-        access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        region: ap-northeast-2
-        local-image: my-image
-        image: hanghea99-plus-0010:${{ github.sha }}
-
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.ecr.outputs.imageUrl }}
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
