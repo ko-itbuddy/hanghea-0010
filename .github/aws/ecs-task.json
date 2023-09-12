@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:337732851607:task-definition/hanghea99-plus-0010:3",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:337732851607:task-definition/hanghea99-plus-0010:16",
     "containerDefinitions": [
         {
             "name": "api",
@@ -55,9 +55,10 @@
         }
     ],
     "family": "hanghea99-plus-0010",
+    "taskRoleArn": "arn:aws:iam::337732851607:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::337732851607:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 3,
+    "revision": 16,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -72,6 +73,9 @@
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
         },
         {
             "name": "ecs.capability.execution-role-ecr-pull"
@@ -100,7 +104,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-09-12T15:55:06.649Z",
+    "registeredAt": "2023-09-12T19:09:15.668Z",
     "registeredBy": "arn:aws:iam::337732851607:root",
     "tags": []
 }
