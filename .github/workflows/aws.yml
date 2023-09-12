@@ -34,7 +34,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: 337732851607.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010
-  ECS_SERVICE: cicd
+  ECS_SERVICE: cicd-service
   ECS_CLUSTER: cicd-cluster
   ECS_TASK_DEFINITION: .github/aws/ecs-task.json
   CONTAINER_NAME: api
