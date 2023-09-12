@@ -63,7 +63,7 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - run: docker build --tag hanghea99-plus-0010:v1 api/.
+    - run: docker build --tag my-image api/.
     - name: Push to ECR
       id: ecr
       uses: jwalton/gh-ecr-push@v1
@@ -71,8 +71,8 @@ jobs:
         access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         region: ap-northeast-2
-        local-image: hanghea99-plus-0010:v1
-        image: hanghea99-plus-0010:v1, hanghea99-plus-0010:latest
+        local-image: my-image
+        image: hanghea99-plus-0010:${{ github.sha }}
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
