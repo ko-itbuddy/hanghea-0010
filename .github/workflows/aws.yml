@@ -37,7 +37,7 @@ env:
   ECS_SERVICE: cicd
   ECS_CLUSTER: cdcd-cluster
   ECS_TASK_DEFINITION: ./github/aws/ecs-task.json
-  CONTAINER_NAME: cicd-container
+  CONTAINER_NAME: api
 
 permissions:
   contents: read
