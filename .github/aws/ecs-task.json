@@ -1,10 +1,10 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:337732851607:task-definition/hanghea99-plus-0010",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:289360095042:task-definition/hanghea99-plus-0010:1",
     "containerDefinitions": [
         {
             "name": "api",
-            "image": "337732851607.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010",
-            "cpu": 2048,
+            "image": "289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010",
+            "cpu": 0,
             "portMappings": [
                 {
                     "name": "api-8080-tcp",
@@ -19,19 +19,38 @@
             "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
-            "ulimits": []
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/hanghea99-plus-0010",
+                    "awslogs-region": "ap-northeast-2",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            }
         }
     ],
     "family": "hanghea99-plus-0010",
-    "taskRoleArn": "arn:aws:iam::337732851607:role/ecsTaskExecutionRole",
-    "executionRoleArn": "arn:aws:iam::337732851607:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::289360095042:role/AmazonECSTaskExecutioner",
+    "executionRoleArn": "arn:aws:iam::289360095042:role/AmazonECSTaskExecutioner",
     "networkMode": "awsvpc",
-    "revision": 25,
+    "revision": 1,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
         {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
             "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
         },
         {
             "name": "com.amazonaws.ecs.capability.task-iam-role"
@@ -44,6 +63,9 @@
         },
         {
             "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
         }
     ],
     "placementConstraints": [],
@@ -54,13 +76,13 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "cpu": "2048",
-    "memory": "4096",
+    "cpu": "1024",
+    "memory": "3072",
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-09-12T19:42:33.726Z",
-    "registeredBy": "arn:aws:iam::337732851607:root",
+    "registeredAt": "2023-09-13T09:07:13.244Z",
+    "registeredBy": "arn:aws:iam::289360095042:root",
     "tags": []
 }
