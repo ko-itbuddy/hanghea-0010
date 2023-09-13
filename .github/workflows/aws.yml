@@ -63,6 +63,10 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d_%H:%M:%S')"
+
     - run: docker build --tag my-image api/.
     - name: Push to ECR
       id: ecr
@@ -72,7 +76,7 @@ jobs:
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         region: ap-northeast-2
         local-image: my-image
-        image: hanghea99-plus-0010:${{ github.sha }}
+        image: hanghea99-plus-0010:${{ steps.date.outputs.date }}
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
