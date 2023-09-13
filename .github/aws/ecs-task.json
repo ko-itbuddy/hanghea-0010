@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "api",
-            "image": "337732851607.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010",
+            "image": "337732851607.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010:20230913073737",
             "cpu": 2048,
             "portMappings": [
                 {
