@@ -10,7 +10,7 @@ COPY src src
 RUN chmod +x gradlew
 # -x test는 tdd 구현시 필요한 부분 현재는 datasource connection test 실패로 제외 해놓음
 #RUN ./gradlew clean build -x test
-RUN gradle build -x test --parallel --continue > /dev/null 2>&1 || true
+RUN ./gradle build -x test --parallel --continue > /dev/null 2>&1 || true
 
 #################################################################
 
