@@ -35,10 +35,10 @@ env:
   MY_ENV_VAR: ${{ github.ref}}
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY:
-   - if [ env.MY_ENV_VAR == "main" ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010
-   - if [ env.MY_ENV_VAR == "cbt" ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010-cbt
-   - if [ env.MY_ENV_VAR == "dev" ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010-dev
-   - if [ env.MY_ENV_VAR == "dbim" ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010-dev
+  if [ env.MY_ENV_VAR == 'main' ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010
+  if [ env.MY_ENV_VAR == "cbt" ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010-cbt
+  if [ env.MY_ENV_VAR == "dev" ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010-dev
+  if [ env.MY_ENV_VAR == "dbim" ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010-dev
   ECS_SERVICE:
    - if [ env.MY_ENV_VAR == "main" ]; then ECS_SERVICE: cicd-service
    - if [ env.MY_ENV_VAR == "cbt" ]; then ECS_SERVICE: cicd-service-cbt
