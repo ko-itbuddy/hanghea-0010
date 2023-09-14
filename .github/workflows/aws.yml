@@ -32,26 +32,9 @@ on:
   workflow_dispatch: 
 
 env:
-  MY_ENV_VAR: ${{ github.ref_name}}
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY:
-  if [ env.MY_ENV_VAR == 'main' ]; then ECR_REPOSITORY: hanghea99-plus-0010
-  if [ env.MY_ENV_VAR == 'cbt' ]; then ECR_REPOSITORY: hanghea99-plus-0010-cbt
-  if [ env.MY_ENV_VAR == 'dev' ]; then ECR_REPOSITORY: hanghea99-plus-0010-dev
-  if [ env.MY_ENV_VAR == 'dbim' ]; then ECR_REPOSITORY: hanghea99-plus-0010-dev
-  echo: MY_ENV_VAR
-  ECS_SERVICE:
-  if [ env.MY_ENV_VAR == 'main' ]; then ECS_SERVICE: cicd-service
-  if [ env.MY_ENV_VAR == 'cbt' ]; then ECS_SERVICE: cicd-service-cbt
-  if [ env.MY_ENV_VAR == "dev' ]; then ECS_SERVICE: cicd-service-dev
-  if [ env.MY_ENV_VAR == 'dbim' ]; then ECS_SERVICE: cicd-service-dev
-  ECS_CLUSTER: cicd-cluster
-  ECS_TASK_DEFINITION: 
-  if [ env.MY_ENV_VAR == 'main' ]; then ECS_TASK_DEFINITION: .github/aws/ecs-task-prd.json
-  if [ env.MY_ENV_VAR == 'cbt' ]; then ECS_TASK_DEFINITION: .github/aws/ecs-task-cbt.json
-  if [ env.MY_ENV_VAR == "dev' ]; then ECS_TASK_DEFINITION: .github/aws/ecs-task-dev.json
-  if [ env.MY_ENV_VAR == 'dbim' ]; then ECS_TASK_DEFINITION: .github/aws/ecs-task-dev.json
   CONTAINER_NAME: api
+  ECS_CLUSTER: cicd-cluster
 
 permissions:
   contents: read
@@ -63,6 +46,29 @@ jobs:
     environment: production
 
     steps:
+    - name: Set Varialbe By Branch Name
+      id: variable
+      run: |
+        echo "Running on branch ${{ github.ref_name }}"
+        if [ "${{ github.ref_name }}" = "main" ]; then
+          echo "::set-output name=ecrRepositoryName::hanghea99-plus-0010-prd"
+          echo "::set-output name=ecsService::cicd-service-prd"
+          echo "::set-output name=ecsTask::.github/aws/ecs-task-prd.json"
+        elif [ "${{ github.ref_name }}" = "cbt" ]; then
+          echo "::set-output name=ecrRepositoryName::hanghea99-plus-0010-cbt"
+          echo "::set-output name=ecsService::cicd-service-cbt"
+          echo "::set-output name=ecsTask::.github/aws/ecs-task-cbt.json"
+        elif [ "${{ github.ref_name }}" = "dev" ]; then
+          echo "::set-output name=ecrRepositoryName::hanghea99-plus-001-dev"
+          echo "::set-output name=ecsService::cicd-service-dev"
+          echo "::set-output name=ecsTask::.github/aws/ecs-task-dev.json"
+        elif [ "${{ github.ref_name }}" = "dbim" ]; then
+          echo "::set-output name=ecrRepositoryName::hanghea99-dev-0010-dev"
+          echo "::set-output name=ecsService::cicd-service-dev"
+          echo "::set-output name=ecsTask::.github/aws/ecs-task-dev.json"
+        fi
+
+
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -88,16 +94,16 @@ jobs:
       with:
         access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        region: ap-northeast-2
+        region: ${{ env.AWS_REGION }}
         local-image: my-image
-        image: ${{ env.ECR_REPOSITORY }}:${{ steps.date.outputs.date }}
+        image: ${{ steps.variable.outputs.ecrRepositoryName }}:${{ steps.date.outputs.date }}
     
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        task-definition: ${{ steps.variable.outputs.ecsTask }}
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.ecr.outputs.imageUrl }}
 
@@ -105,6 +111,6 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE }}
+        service: ${{ steps.variable.outputs.ecsService }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
