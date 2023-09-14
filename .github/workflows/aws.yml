@@ -51,21 +51,21 @@ jobs:
       run: |
         echo "Running on branch ${{ github.ref_name }}"
         if [ "${{ github.ref_name }}" = "main" ]; then
-          echo "::set-output name=ecrRepositoryName::hanghea99-plus-0010-prd"
-          echo "::set-output name=ecsService::cicd-service-prd"
-          echo "::set-output name=ecsTask::.github/aws/ecs-task-prd.json"
+          echo "ecrRepositoryName=hanghea99-plus-0010-prd" >> $GITHUB_OUTPUT
+          echo "ecsService=cicd-service-prd" >> $GITHUB_OUTPUT
+          echo "ecsTask=.github/aws/ecs-task-prd.json" >> $GITHUB_OUTPUT
         elif [ "${{ github.ref_name }}" = "cbt" ]; then
-          echo "::set-output name=ecrRepositoryName::hanghea99-plus-0010-cbt"
-          echo "::set-output name=ecsService::cicd-service-cbt"
-          echo "::set-output name=ecsTask::.github/aws/ecs-task-cbt.json"
+          echo "ecrRepositoryName=hanghea99-plus-0010-cbt" >> $GITHUB_OUTPUT
+          echo "ecsService=cicd-service-cbt" >> $GITHUB_OUTPUT
+          echo "ecsTask=.github/aws/ecs-task-cbt.json" >> $GITHUB_OUTPUT
         elif [ "${{ github.ref_name }}" = "dev" ]; then
-          echo "::set-output name=ecrRepositoryName::hanghea99-plus-001-dev"
-          echo "::set-output name=ecsService::cicd-service-dev"
-          echo "::set-output name=ecsTask::.github/aws/ecs-task-dev.json"
+          echo "ecrRepositoryName=hanghea99-plus-0010-dev" >> $GITHUB_OUTPUT
+          echo "ecsService=cicd-service-dev" >> $GITHUB_OUTPUT
+          echo "ecsTask=.github/aws/ecs-task-dev.json" >> $GITHUB_OUTPUT
         elif [ "${{ github.ref_name }}" = "dbim" ]; then
-          echo "::set-output name=ecrRepositoryName::hanghea99-dev-0010-dev"
-          echo "::set-output name=ecsService::cicd-service-dev"
-          echo "::set-output name=ecsTask::.github/aws/ecs-task-dev.json"
+          echo "ecrRepositoryName=hanghea99-plus-0010-dev" >> $GITHUB_OUTPUT
+          echo "ecsService=cicd-service-dev" >> $GITHUB_OUTPUT
+          echo "ecsTask=.github/aws/ecs-task-dev.json" >> $GITHUB_OUTPUT
         fi
 
 
