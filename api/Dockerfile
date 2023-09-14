@@ -6,8 +6,10 @@ COPY settings.gradle .
 COPY gradle gradle
 COPY src src
 
+
 RUN chmod +x gradlew
 RUN ./gradlew clean build
+
 #################################################################
 
 FROM amazoncorretto:17
