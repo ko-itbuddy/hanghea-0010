@@ -32,13 +32,13 @@ on:
   workflow_dispatch: 
 
 env:
-  MY_ENV_VAR: ${{ github.ref}}
+  MY_ENV_VAR: ${{ github.ref_name}}
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY:
-  if [ env.MY_ENV_VAR == 'main' ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010
-  if [ env.MY_ENV_VAR == 'cbt' ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010-cbt
-  if [ env.MY_ENV_VAR == 'dev' ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010-dev
-  if [ env.MY_ENV_VAR == 'dbim' ]; then ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010-dev
+  if [ env.MY_ENV_VAR == 'main' ]; then ECR_REPOSITORY: hanghea99-plus-0010
+  if [ env.MY_ENV_VAR == 'cbt' ]; then ECR_REPOSITORY: hanghea99-plus-0010-cbt
+  if [ env.MY_ENV_VAR == 'dev' ]; then ECR_REPOSITORY: hanghea99-plus-0010-dev
+  if [ env.MY_ENV_VAR == 'dbim' ]; then ECR_REPOSITORY: hanghea99-plus-0010-dev
   echo: MY_ENV_VAR
   ECS_SERVICE:
   if [ env.MY_ENV_VAR == 'main' ]; then ECS_SERVICE: cicd-service
@@ -46,7 +46,11 @@ env:
   if [ env.MY_ENV_VAR == "dev' ]; then ECS_SERVICE: cicd-service-dev
   if [ env.MY_ENV_VAR == 'dbim' ]; then ECS_SERVICE: cicd-service-dev
   ECS_CLUSTER: cicd-cluster
-  ECS_TASK_DEFINITION: .github/aws/ecs-task.json
+  ECS_TASK_DEFINITION: 
+  if [ env.MY_ENV_VAR == 'main' ]; then ECS_TASK_DEFINITION: .github/aws/ecs-task-prd.json
+  if [ env.MY_ENV_VAR == 'cbt' ]; then ECS_TASK_DEFINITION: .github/aws/ecs-task-cbt.json
+  if [ env.MY_ENV_VAR == "dev' ]; then ECS_TASK_DEFINITION: .github/aws/ecs-task-dev.json
+  if [ env.MY_ENV_VAR == 'dbim' ]; then ECS_TASK_DEFINITION: .github/aws/ecs-task-dev.json
   CONTAINER_NAME: api
 
 permissions:
@@ -86,7 +90,8 @@ jobs:
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         region: ap-northeast-2
         local-image: my-image
-        image: hanghea99-plus-0010:${{ steps.date.outputs.date }}
+        image: ${{ env.ECR_REPOSITORY }}:${{ steps.date.outputs.date }}
+    
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
