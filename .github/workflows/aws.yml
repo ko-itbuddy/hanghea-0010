@@ -28,7 +28,7 @@ name: Deploy to Amazon ECS
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main","dbim","alpha"]
   workflow_dispatch: 
 
 env:
