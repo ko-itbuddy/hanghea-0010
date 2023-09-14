@@ -7,10 +7,7 @@ COPY gradle gradle
 COPY src src
 
 RUN chmod +x gradlew
-RUN ./gradlew build || return 0
-COPY . .
-RUN ./gradlew build
-
+RUN ./gradlew clean build
 #################################################################
 
 FROM amazoncorretto:17
