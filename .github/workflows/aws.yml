@@ -87,6 +87,17 @@ jobs:
       id: date
       run: echo "::set-output name=date::$(date +'%Y%m%d%H%M%S')"
 
+
+
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/api/.gradle/caches
+          ~/api/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('~/api/**/*.gradle*', '~/api/**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
     - run: docker build --tag my-image api/.
     - name: Push to ECR
       id: ecr
