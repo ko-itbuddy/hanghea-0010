@@ -69,8 +69,7 @@ jobs:
 
     - name: Get current date
       id: date
-      run: echo "::set-output name=date::$(date +'%Y%m%d%H%M%S')"
-
+      run: echo "date=$(date +'%Y%m%d%H%M%S') >> $GITHUB_OUTPUT"
 
     - name: Checkout
       uses: actions/checkout@v3
