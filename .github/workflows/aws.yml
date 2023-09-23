@@ -28,16 +28,13 @@ name: Deploy to Amazon ECS
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main","cbt","dev"]
   workflow_dispatch: 
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: 289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010
-  ECS_SERVICE: cicd-service
-  ECS_CLUSTER: cicd-cluster
-  ECS_TASK_DEFINITION: .github/aws/ecs-task.json
   CONTAINER_NAME: api
+  ECS_CLUSTER: cicd-cluster
 
 permissions:
   contents: read
@@ -49,6 +46,32 @@ jobs:
     environment: production
 
     steps:
+    - name: Set Varialbe By Branch Name
+      id: variable
+      run: |
+        echo "Running on branch ${{ github.ref_name }}"
+        if [ "${{ github.ref_name }}" = "main" ]; then
+          echo "ecrRepositoryName=hanghea99-plus-0010-prd" >> $GITHUB_OUTPUT
+          echo "ecsService=cicd-service-prd" >> $GITHUB_OUTPUT
+          echo "ecsTask=.github/aws/ecs-task-prd.json" >> $GITHUB_OUTPUT
+        elif [ "${{ github.ref_name }}" = "cbt" ]; then
+          echo "ecrRepositoryName=hanghea99-plus-0010-cbt" >> $GITHUB_OUTPUT
+          echo "ecsService=cicd-service-cbt" >> $GITHUB_OUTPUT
+          echo "ecsTask=.github/aws/ecs-task-cbt.json" >> $GITHUB_OUTPUT
+        elif [ "${{ github.ref_name }}" = "dev" ]; then
+          echo "ecrRepositoryName=hanghea99-plus-0010-dev" >> $GITHUB_OUTPUT
+          echo "ecsService=cicd-service-dev" >> $GITHUB_OUTPUT
+          echo "ecsTask=.github/aws/ecs-task-dev.json" >> $GITHUB_OUTPUT
+        elif [ "${{ github.ref_name }}" = "dbim" ]; then
+          echo "ecrRepositoryName=hanghea99-plus-0010-dev" >> $GITHUB_OUTPUT
+          echo "ecsService=cicd-service-dev" >> $GITHUB_OUTPUT
+          echo "ecsTask=.github/aws/ecs-task-dev.json" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Get current date
+      id: date
+      run: echo "date=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -63,9 +86,17 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Get current date
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y%m%d%H%M%S')"
+
+
+
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/api/.gradle/caches
+          ~/api/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('~/api/**/*.gradle*', '~/api/**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
 
     - run: docker build --tag my-image api/.
     - name: Push to ECR
@@ -74,15 +105,16 @@ jobs:
       with:
         access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        region: ap-northeast-2
+        region: ${{ env.AWS_REGION }}
         local-image: my-image
-        image: hanghea99-plus-0010:${{ steps.date.outputs.date }}
+        image: ${{ steps.variable.outputs.ecrRepositoryName }}:${{ steps.date.outputs.date }}
+    
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        task-definition: ${{ steps.variable.outputs.ecsTask }}
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.ecr.outputs.imageUrl }}
 
@@ -90,6 +122,6 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE }}
+        service: ${{ steps.variable.outputs.ecsService }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true

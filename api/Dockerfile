@@ -10,7 +10,7 @@ COPY src src
 RUN chmod +x gradlew
 # -x test는 tdd 구현시 필요한 부분 현재는 datasource connection test 실패로 제외 해놓음
 
-RUN ./gradlew build || return 0
+RUN ./gradlew build -x || return 0
 COPY . .
 RUN ./gradlew build -x test
 

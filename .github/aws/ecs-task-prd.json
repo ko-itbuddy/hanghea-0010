@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:289360095042:task-definition/hanghea99-plus-0010:1",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:289360095042:task-definition/hanghea99-plus-0010-prd:1",
     "containerDefinitions": [
         {
             "name": "api",
-            "image": "289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010",
+            "image": "289360095042.dkr.ecr.ap-northeast-2.amazonaws.com/hanghea99-plus-0010-prd",
             "cpu": 0,
             "portMappings": [
                 {
@@ -16,7 +16,12 @@
             ],
             "essential": true,
             "environment": [],
-            "environmentFiles": [],
+            "environmentFiles": [
+                {
+                    "value": "arn:aws:s3:::hanghea99-plus-envs/envfile_PRD.env",
+                    "type": "s3"
+                }
+            ],
             "mountPoints": [],
             "volumesFrom": [],
             "ulimits": [],
@@ -24,7 +29,7 @@
                 "logDriver": "awslogs",
                 "options": {
                     "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/hanghea99-plus-0010",
+                    "awslogs-group": "/ecs/hanghea99-plus-0010-prd",
                     "awslogs-region": "ap-northeast-2",
                     "awslogs-stream-prefix": "ecs"
                 },
@@ -32,7 +37,7 @@
             }
         }
     ],
-    "family": "hanghea99-plus-0010",
+    "family": "hanghea99-plus-0010-prd",
     "taskRoleArn": "arn:aws:iam::289360095042:role/AmazonECSTaskExecutioner",
     "executionRoleArn": "arn:aws:iam::289360095042:role/AmazonECSTaskExecutioner",
     "networkMode": "awsvpc",
@@ -51,6 +56,9 @@
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.env-files.s3"
         },
         {
             "name": "com.amazonaws.ecs.capability.task-iam-role"
@@ -82,7 +90,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-09-13T09:07:13.244Z",
-    "registeredBy": "arn:aws:iam::289360095042:root",
+    "registeredAt": "2023-09-14T15:48:08.117Z",
+    "registeredBy": "arn:aws:iam::289360095042:user/hanghea99-plus-0010",
     "tags": []
 }
