@@ -1,4 +1,4 @@
-package com.hanghea.cicd.api.common
+package com.hanghea.cicd.api.common.vo
 
  abstract class ResCoreVo<T>(
     var code: String,

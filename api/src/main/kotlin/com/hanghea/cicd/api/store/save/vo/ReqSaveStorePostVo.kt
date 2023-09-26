@@ -1,7 +1,7 @@
 package com.hanghea.cicd.api.store.save.vo
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.hanghea.cicd.api.common.StoreVo
+import com.hanghea.cicd.api.common.vo.StoreVo
 import jakarta.validation.Valid
 
 data class ReqSaveStorePostVo(
