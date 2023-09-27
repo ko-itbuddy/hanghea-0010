@@ -1,6 +1,6 @@
 package com.hanghea.cicd.api.store.save.vo
 
-import com.hanghea.cicd.api.common.vo.ResCoreVo
+import com.hanghea.cicd.api.common.vo.core.ResCoreVo
 import com.hanghea.cicd.api.common.ResultCodeMsg
 import com.hanghea.cicd.api.common.vo.StoreVo
 
